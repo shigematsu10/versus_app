@@ -1,0 +1,29 @@
+{
+    "result": [
+        {
+            "date": "2022年9月25日（日）",
+            "match_id": 0,
+            "winner_id": 0
+        },
+        {
+            "date": "2022年9月25日（日）",
+            "match_id": 0,
+            "winner_id": 0
+        },
+        {
+            "date": "2022年9月25日（日）",
+            "match_id": 0,
+            "winner_id": 0
+        },
+        {
+            "date": "2022年9月25日（日）",
+            "match_id": 1,
+            "winner_id": 1
+        },
+        {
+            "date": "2022年10月30日（日）",
+            "match_id": 1,
+            "winner_id": 1
+        }
+    ]
+}

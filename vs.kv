@@ -1,0 +1,278 @@
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+#: import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+
+Display:
+
+<Display>:
+    BoxLayout:
+        orientation: "vertical"
+        ScreenManager:
+            id: sm
+            Screen_One:
+            Screen_Two:
+            Screen_Three:
+
+        BoxLayout:
+            size_hint: 1, None
+            height: '48dp'
+            canvas:
+                Color:
+                    rgba: 1,1,1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                Label:
+                    size_hint: 1, None
+                Button:
+                    background_normal: ''
+                    background_color: (1,1,1,1)
+                    on_release:
+                        sm.transition = SlideTransition(direction='right')
+                        sm.current = 'screen_one'
+                    Image:
+                        source: "home.png"
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y
+                        size: 70, 70
+                Label:# padding
+                    size_hint: 1, None
+            BoxLayout:
+                Label:# padding
+                    size_hint: 1, None
+                Button:
+                    background_normal: ''
+                    background_color: (1,1,1,1)
+                    on_release:
+                        sm.transition = RiseInTransition()
+                        sm.current = 'screen_two'
+                    Image:
+                        source: "seiseki.png"
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y
+                        size: 70, 70
+                Label:# padding
+                    size_hint: 1, None
+            BoxLayout:
+                Label:# padding
+                    size_hint: 1, None
+                    disabled_color: 1,1,1,1
+                Button:
+                    background_normal: ''
+                    background_color: (1,1,1,1)
+                    on_release:
+                        sm.transition = SlideTransition(direction='left')
+                        sm.current = 'screen_three'
+                    Image:
+                        source: "settei.png"
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y
+                        size: 70, 70
+                Label:# padding
+                    size_hint: 1, None
+
+<Screen_One>:
+    name: 'screen_one'
+    canvas:
+        Rectangle:
+            source: "background.png"
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:# padding
+            size_hint: 0.8, 0.01
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.8, 0.45
+            pos_hint: {'x':0.1, 'y':0.5}
+            
+            canvas:
+                Rectangle:
+                    source: "vs_card1.png"
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                padding: 0,20,0,0
+                Label:
+                    color: 1,1,1,1
+                    halign: 'left'
+                    text: '亀井　日奈子'
+                Image:
+                    source: 'hina.jpeg'
+            TextInput:
+                foreground_color: 1,1,1,1
+                text: '私は大分出身、大分在住です。'
+                halign: 'center'
+                valign: 'center'
+                background_active: 'touka.png'
+                background_normal: 'touka.png'
+
+        Label:# padding
+            size_hint: 0.8, 0.02
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.8, 0.45
+            pos_hint: {'x':0.1, 'y':0.5}
+            canvas:
+                Rectangle:
+                    source: "vs_card2.png"
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                padding: 0,20,0,0
+                Label:
+                    color: 1,1,1,1
+                    halign: 'left'
+                    text: '重松　祐匡'
+                Image:
+                    source: 'shige.jpeg'
+            TextInput:
+                foreground_color: 1,1,1,1
+                text: '私は福岡出身、熊本在住です。'
+                halign: 'center'
+                valign: 'center'
+                background_active: 'touka.png'
+                background_normal: 'touka.png'
+
+        Label:# padding
+            size_hint: 0.8, 0.01
+
+ 
+<Screen_Two>:
+    name: 'screen_two'
+    canvas:
+        Rectangle:
+            source: "vs_back.jpeg"
+            pos: 0, 0
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20,30,20,30
+
+        BoxLayout:
+            size_hint_y: 0.5
+            padding: 0,20,0,20
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    id: view_label2
+                    text_size: 200, 100
+                    size_hint_y: 0.1
+                    halign: 'left'
+                    valign: 'middle'
+                    color: 0,0,0,1
+                    text: '総成績'
+                Label:
+                    text_size: 300, 150
+                    halign: 'left'
+                    valign: 'middle'
+                    markup: True
+                    text: root.all_result_text
+                    font_size: 25
+            Knob:
+                size: 200, 200
+                min: 0
+                max: 100
+                step: 5
+                value: (root.shige_win_num / root.all_match_num)*100
+                knobimg_size: 0.5
+                knobimg_source: "knob_metal.png"
+                marker_img: "blue.png"
+                markeroff_color: 1, 0, 0, 1
+
+        Button:
+            background_color: 0,0,1,1
+            size_hint_y: 0.2
+            text: '最近の成績'
+
+        ScrollView:
+            GridLayout:
+                cols:1
+                size_hint_x: 1
+                size_hint_y: 1.5
+                BoxLayout:
+                    Button:
+                        background_color: "#1E90FF"
+                        text: root.result5_text_newest
+                        font_size: 25
+                    Button:
+                        background_color: 0,0,1,1
+                        size_hint_x: 0.1
+                        Image:
+                            source: 'edit.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: 40, 40
+                BoxLayout:
+                    Button:
+                        background_color: "#1E90FF"
+                        text: root.result4_text
+                        font_size: 25
+                    Button:
+                        background_color: 0,0,1,1
+                        size_hint_x: 0.1
+                        Image:
+                            source: 'edit.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: 40, 40
+                BoxLayout:
+                    Button:
+                        background_color: "#1E90FF"
+                        text: root.result3_text
+                        font_size: 25
+                    Button:
+                        background_color: 0,0,1,1
+                        size_hint_x: 0.1
+                        Image:
+                            source: 'edit.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: 40, 40
+                BoxLayout:
+                    Button:
+                        background_color: "#1E90FF"
+                        text: root.result2_text
+                        font_size: 25
+                    Button:
+                        background_color: 0,0,1,1
+                        size_hint_x: 0.1
+                        Image:
+                            source: 'edit.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: 40, 40
+                BoxLayout:
+                    Button:
+                        background_color: "#1E90FF"
+                        text: root.result1_text_oldest
+                        font_size: 25
+                    Button:
+                        background_color: 0,0,1,1
+                        size_hint_x: 0.1
+                        Image:
+                            source: 'edit.png'
+                            center_x: self.parent.center_x
+                            center_y: self.parent.center_y
+                            size: 40, 40
+        Label:# padding
+            size_hint: 0.8, 0.1
+        Button:
+            background_color: 0,0,1,1
+            pos_hint: {'center_x':.9, 'center_y:':1}
+            size_hint: (None, None)
+            width: 200
+            height: 100
+            text: '成績追加'
+            on_press: root.button_clicked()
+
+<Screen_Three>:
+    name: 'screen_three'
+    Button:
+        background_color: 0,1,1,0
+        text: '画面3(のボタン)'
