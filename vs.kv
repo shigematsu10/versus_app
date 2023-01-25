@@ -100,12 +100,12 @@ Display:
                 Label:
                     color: 1,1,1,1
                     halign: 'left'
-                    text: '亀井　日奈子'
+                    text: root.pl0_name
                 Image:
-                    source: 'hina.jpeg'
+                    source: 'pl0.png'
             TextInput:
                 foreground_color: 1,1,1,1
-                text: '私は大分出身、大分在住です。'
+                text: '私はPlayer0です。'
                 halign: 'center'
                 valign: 'center'
                 background_active: 'touka.png'
@@ -128,12 +128,12 @@ Display:
                 Label:
                     color: 1,1,1,1
                     halign: 'left'
-                    text: '重松　祐匡'
+                    text: root.pl1_name
                 Image:
-                    source: 'shige.jpeg'
+                    source: 'pl1.png'
             TextInput:
                 foreground_color: 1,1,1,1
-                text: '私は福岡出身、熊本在住です。'
+                text: '私はPlayer1です。'
                 halign: 'center'
                 valign: 'center'
                 background_active: 'touka.png'
@@ -179,7 +179,7 @@ Display:
                 min: 0
                 max: 100
                 step: 5
-                value: (root.shige_win_num / root.all_match_num)*100
+                value: (root.pl0_win_num / root.all_match_num)*100
                 knobimg_size: 0.5
                 knobimg_source: "knob_metal.png"
                 marker_img: "blue.png"
@@ -201,8 +201,10 @@ Display:
                         text: root.result5_text_newest
                         font_size: 25
                     Button:
+                        id: result1
                         background_color: 0,0,1,1
                         size_hint_x: 0.1
+                        on_press: root.ch_result5()
                         Image:
                             source: 'edit.png'
                             center_x: self.parent.center_x
@@ -214,8 +216,10 @@ Display:
                         text: root.result4_text
                         font_size: 25
                     Button:
+                        id: result2
                         background_color: 0,0,1,1
                         size_hint_x: 0.1
+                        on_press: root.ch_result4()
                         Image:
                             source: 'edit.png'
                             center_x: self.parent.center_x
@@ -227,8 +231,10 @@ Display:
                         text: root.result3_text
                         font_size: 25
                     Button:
+                        id: result3
                         background_color: 0,0,1,1
                         size_hint_x: 0.1
+                        on_press: root.ch_result3()
                         Image:
                             source: 'edit.png'
                             center_x: self.parent.center_x
@@ -240,8 +246,10 @@ Display:
                         text: root.result2_text
                         font_size: 25
                     Button:
+                        id: result4
                         background_color: 0,0,1,1
                         size_hint_x: 0.1
+                        on_press: root.ch_result2()
                         Image:
                             source: 'edit.png'
                             center_x: self.parent.center_x
@@ -249,12 +257,14 @@ Display:
                             size: 40, 40
                 BoxLayout:
                     Button:
+                        id: result5
                         background_color: "#1E90FF"
                         text: root.result1_text_oldest
                         font_size: 25
                     Button:
                         background_color: 0,0,1,1
                         size_hint_x: 0.1
+                        on_press: root.ch_result1()
                         Image:
                             source: 'edit.png'
                             center_x: self.parent.center_x
@@ -273,6 +283,73 @@ Display:
 
 <Screen_Three>:
     name: 'screen_three'
-    Button:
-        background_color: 0,1,1,0
-        text: '画面3(のボタン)'
+    canvas:
+        Rectangle:
+            source: "vs_back.jpeg"
+            pos: 0, 0
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20,30,20,30
+
+        Label:# padding
+            size_hint: 0.8, 0.1
+
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                #text_size: 200, 100
+                size_hint_y: 0.1
+                halign: 'left'
+                valign: 'middle'
+                color: 0,0,0,1
+                text: 'プレイヤー名の変更'
+            BoxLayout:
+                TextInput:
+                    id:pl_inp
+                    halign: 'left'
+                    valign: 'middle'
+                    markup: True
+                    text: ''
+                    font_size: 25
+                Button:
+                    background_color: 0,0,1,1
+                    size_hint_x: 0.1
+                    on_press: root.ch_pl_name()
+                    Image:
+                        source: 'add.png'
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y
+                        size: 40, 40
+        
+        Label:# padding
+            size_hint: 0.8, 0.1
+
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                #text_size: 200, 100
+                size_hint_y: 0.1
+                halign: 'left'
+                valign: 'middle'
+                color: 0,0,0,1
+                text: '勝負の追加'
+            BoxLayout:
+                TextInput:
+                    id:ver_inp
+                    halign: 'left'
+                    valign: 'middle'
+                    markup: True
+                    text: ''
+                    font_size: 25
+                Button:
+                    background_color: 0,0,1,1
+                    size_hint_x: 0.1
+                    on_press: root.add_vs_type()
+                    Image:
+                        source: 'add.png'
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y
+                        size: 40, 40
+        Label:# padding
+            size_hint: 0.8, 0.1

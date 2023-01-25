@@ -24,26 +24,40 @@ LabelBase.register(DEFAULT_FONT, 'NotoSansJP-Black.otf')
 resource_add_path('./image')
 resource_add_path('./json')
 
-class Display(BoxLayout):
-    with open('./json/setting.json', 'r') as json_file:
-        setting_data = json.load(json_file)
-    
-    with open('./json/versus.json', 'r') as json_file:
-        vs = json.load(json_file)
+class Setting:
+    pl0_name = ''
+    pl1_name = ''
+    pl0_win_num = 0
+    pl1_win_num = 0
+    all_match_num = 0
 
+    def __init__(self):
+        with open('./json/setting.json', 'r') as json_file:
+            setting_data = json.load(json_file)
+        self.pl0_name = setting_data['user'][0]["0"]
+        self.pl1_name = setting_data['user'][0]["1"]
+       
+        with open('./json/versus.json', 'r') as json_file:
+            vs = json.load(json_file)
+
+
+class Display(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
  
-class Screen_One(Screen):
+class Screen_One(Screen, Setting):
     pass
  
-class Screen_Two(Screen):
-    shige_win_num = 0
-    hina_win_num = 0
+class Screen_Two(Screen, Setting):
+    pl0_name = 'Player0'
+    pl1_name = 'Player1'
+    pl0_win_num = 0
+    pl1_win_num = 0
     all_match_num = 0
-    shige_text = StringProperty('')
-    hina_text = StringProperty('')
+
+    pl0_text = StringProperty('')
+    pl1_text = StringProperty('')
     match_text = StringProperty('')
     all_result_text = StringProperty('')
     result1_text_oldest = StringProperty('')
@@ -51,7 +65,6 @@ class Screen_Two(Screen):
     result3_text = StringProperty('')
     result4_text = StringProperty('')
     result5_text_newest = StringProperty('')
-    source = StringProperty('saru.png')
     
 
     def __init__(self, **kwargs):
@@ -66,11 +79,11 @@ class Screen_Two(Screen):
         for id, result in enumerate(vs["result"]):
 
             if result["winner_id"] == 0 :
-                self.hina_win_num += 1
-                winner_name = 'Player0'
+                self.pl0_win_num += 1
+                winner_name = self.pl0_name
             else:
-                self.shige_win_num += 1
-                winner_name = 'Player1'
+                self.pl1_win_num += 1
+                winner_name = self.pl1_name
             
             if id == 0 :
                 self.result1_text_oldest = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
@@ -84,20 +97,41 @@ class Screen_Two(Screen):
                 self.result5_text_newest = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
 
         
-        self.shige_text = f'[color=#000000]しげの勝利数：[/color][color=#0000FF]{self.shige_win_num}[/color]'
-        self.hina_text = f'[color=#000000]ひなこちゃんの勝利数：[/color][color=#FF0000]{self.hina_win_num}[/color]'
+        self.pl0_text = f'[color=#000000]{self.pl0_name}の勝利数：[/color][color=#0000FF]{self.pl0_win_num}[/color]'
+        self.pl1_text = f'[color=#000000]{self.pl1_name}の勝利数：[/color][color=#FF0000]{self.pl1_win_num}[/color]'
         self.match_text = f'[color=#000000]総勝負数：{self.all_match_num}[/color]'
-        self.all_result_text = self.match_text + '\n' + self.hina_text + '\n' + self.shige_text
+        self.all_result_text = self.match_text + '\n' + self.pl0_text + '\n' + self.pl1_text
 
-        if self.shige_win_num < self.hina_win_num:
-            self.source = 'inu.png'
 
     def button_clicked(self):
+        # 勝負の記録をjsonファイルに追加する処理
+        # 記録は最大5つまでとし、最も古い記録を削除する機能
+        # 総勝負数、各プレイヤーの勝利数を1加算する処理
         print(self.ids)
         self.ids.view_label2.text = '私の勝ちだ！！'
+    
+    def ch_result1(self):
+        print(self.ids)
+    
+    def ch_result2(self):
+        print(self.ids)
+
+    def ch_result3(self):
+        print(self.ids)
+    
+    def ch_result4(self):
+        print(self.ids)
+    
+    def ch_result5(self):
+        print(self.ids)
 
 class Screen_Three(Screen):
-    pass
+
+    def add_vs_type(self):
+        pass
+
+    def ch_pl_name(self):
+        pass
 
 class VsApp(App):
     def __init__(self, **kwargs):
