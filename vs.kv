@@ -305,13 +305,30 @@ Display:
                 color: 0,0,0,1
                 text: 'プレイヤー名の変更'
             BoxLayout:
-                TextInput:
-                    id:pl_inp
-                    halign: 'left'
-                    valign: 'middle'
-                    markup: True
-                    text: ''
-                    font_size: 25
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        Label:
+                            text: "Player0"
+                            color: 0,0,0,1
+                        CheckBox:
+                            id: pl0
+                            group: "gp01"
+                        Label:# padding
+                            size_hint: 0.8, 0.1
+                        Label:
+                            text: "Player1"
+                            color: 0,0,0,1
+                        CheckBox:
+                            id: pl1
+                            group: "gp01"
+                    TextInput:
+                        id:pl_inp
+                        halign: 'left'
+                        valign: 'middle'
+                        markup: True
+                        text: ''
+                        font_size: 25
                 Button:
                     background_color: 0,0,1,1
                     size_hint_x: 0.1

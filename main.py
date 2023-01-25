@@ -125,13 +125,42 @@ class Screen_Two(Screen, Setting):
     def ch_result5(self):
         print(self.ids)
 
-class Screen_Three(Screen):
+class Screen_Three(Screen, Setting):
+    cl_input = None
+    vs_input = None
 
     def add_vs_type(self):
         pass
 
     def ch_pl_name(self):
-        pass
+        with open('./json/setting.json', 'r') as json_file:
+            setting_data = json.load(json_file)
+        pl_input = self.ids.pl_inp.text
+
+        #名前未入力、変更対象プレイヤー未選択の処理
+        if (pl_input == "") or (pl_input == "名前を入力してください") or (pl_input == "変更が完了しました!"):
+            print("値なし")
+            self.ids.pl_inp.text = "名前を入力してください"
+            pass
+        elif (self.ids.pl0.active==False) and (self.ids.pl1.active==False):
+            print("変更対象のプレイヤーの選択なし")
+            self.ids.pl_inp.text = "変更対象のプレイヤーを選択してください"
+            pass
+
+        if self.ids.pl0.active == True :
+            print(setting_data['user'][0]["0"])
+            setting_data['user'][0]["0"] = pl_input
+        elif self.ids.pl1.active == True :
+            setting_data['user'][0]["1"] = pl_input
+        
+        save_json = {"match_type":setting_data['match_type'], "user":setting_data['user'], "match_result":setting_data['match_result']}
+        with open('./json/setting.json', 'w') as f:
+            json.dump(save_json, f)
+        self.ids.pl_inp.text = "変更が完了しました!"
+
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 class VsApp(App):
     def __init__(self, **kwargs):
