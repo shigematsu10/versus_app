@@ -68,10 +68,11 @@ class PopupMenu(BoxLayout, Setting):
     match0 = Setting.match0
     match1 = Setting.match1
     match2 = Setting.match2
+    all_match_num = Setting.all_match_num
+    pl0_win_num = Setting.pl0_win_num
+    pl1_win_num = Setting.pl1_win_num
 
     def add_result(self):
-        # 勝負の記録をjsonファイルに追加する処理
-        # 記録は最大5つまでとし、最も古い記録を削除する機能
         # 総勝負数、各プレイヤーの勝利数を1加算する処理
 
         # 日付取得
@@ -84,17 +85,39 @@ class PopupMenu(BoxLayout, Setting):
         d = now.strftime('%Y年%m月%d日') + f'（{w}）'
 
         # 勝負に関するデータ取得
+        self.all_match_num += 1
+        if self.ids.match0.active == True :
+            match_id = 0
+        elif self.ids.match1.active == True :
+            match_id = 1
+        elif self.ids.match2.active == True :
+            match_id = 2
 
+        if self.ids.pl0.active == True :
+            winner_id = 0
+            self.pl0_win_num += 1
+        elif self.ids.pl1.active == True :
+            winner_id = 1
+            self.pl1_win_num += 1
 
-        # add_vs = {"date":d , "match_id": , "winner_id":}
-
+        # versus_jsonに保存
+        add_vs = {"date":d , "match_id":match_id, "winner_id":winner_id}
         with open("./json/versus.json", 'r') as json_file:
             vs_data = json.load(json_file)
-        # vs_data["result"].append()
+        vs_data["result"].append(add_vs)
+        save_vs = {"result":vs_data["result"][-5:]}
+        with open('./json/versus.json', 'w') as f:
+            json.dump(save_vs, f)
 
-        # save_vs = {"result":vs_data["result"][0:4]}
-        # with open('./json/setting.json', 'w') as f:
-        #     json.dump(save_vs, f)
+        # setting_jsonに保存
+        with open('./json/setting.json', 'r') as json_file:
+            setting_data = json.load(json_file)
+        setting_data['match_result'][0]["all"] = self.all_match_num
+        setting_data['match_result'][0]["pl0"] = self.pl0_win_num
+        setting_data['match_result'][0]["pl1"] = self.pl1_win_num
+        save_setting = {"match_type":setting_data['match_type'], "user":setting_data['user'], "match_result":setting_data['match_result']}
+        with open('./json/setting.json', 'w') as f:
+            json.dump(save_setting, f)
 
 class Screen_Two(Screen, Setting):
     pl0_name = Setting.pl0_name
@@ -122,7 +145,6 @@ class Screen_Two(Screen, Setting):
         with open(vs_path, 'r') as json_file:
             vs = json.load(json_file)
         
-        self.all_match_num = len(vs["result"])
         match_type = ['あっち向いてホイ', '指スマ', '大富豪']
 
         for id, result in enumerate(vs["result"]):
