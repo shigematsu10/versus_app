@@ -142,7 +142,7 @@ Display:
         Label:# padding
             size_hint: 0.8, 0.01
 
- 
+
 <Screen_Two>:
     name: 'screen_two'
     canvas:
@@ -270,6 +270,7 @@ Display:
                             center_x: self.parent.center_x
                             center_y: self.parent.center_y
                             size: 40, 40
+
         Label:# padding
             size_hint: 0.8, 0.1
         Button:
@@ -279,7 +280,60 @@ Display:
             width: 200
             height: 100
             text: '成績追加'
-            on_press: root.button_clicked()
+            on_press: root.popup_open()
+<PopupMenu>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            Label:# padding
+                size_hint: 0.1, 0.1
+            Label:
+                text: root.pl0_name
+            CheckBox:
+                id: pl0
+                group: "gp02"
+                background_radio_normal: 'white_radio.png'
+                background_radio_down: 'on_radio.png'
+            Label:
+                text: root.pl1_name
+            CheckBox:
+                id: pl1
+                group: "gp02"
+                background_radio_normal: 'white_radio.png'
+                background_radio_down: 'on_radio.png'
+        Label:# padding
+            size_hint: 0.3, 0.1
+        BoxLayout:
+            Label:# padding
+                size_hint: 0.5, 0.1
+            Label:
+                text: root.match0
+            CheckBox:
+                id: pl0
+                group: "gp03"
+                background_radio_normal: 'white_radio.png'
+                background_radio_down: 'on_radio.png'
+            Label:
+                text: root.match1
+            CheckBox:
+                id: pl1
+                group: "gp03"
+                background_radio_normal: 'white_radio.png'
+                background_radio_down: 'on_radio.png'
+
+            Label:
+                text: root.match2
+            CheckBox:
+                id: pl1
+                group: "gp03"
+                background_radio_normal: 'white_radio.png'
+                background_radio_down: 'on_radio.png'
+        Button:
+            text: 'Add'
+            size_hint: 1.0,1.0
+            on_press: root.add_result()
+            on_release: root.popup_close()
 
 <Screen_Three>:
     name: 'screen_three'
