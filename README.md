@@ -12,8 +12,8 @@ The home screen contains cards with the names, images, and introductions of the 
 Names, images, and introductions can be changed in the application.\
 The pattern of the card can also be changed by modifying the source code.\
 ```
-# vs.kvのline95,123
-# 任意の画像に変更可能
+# vs.kv (line 95, and 123)
+# Can be changed to any image
 source: "vs_card1.png"
 ```
 
