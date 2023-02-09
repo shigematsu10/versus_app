@@ -2,9 +2,9 @@
 ## Overview
 This is an application to record your daily game with your girlfriend or best friend.\
 The application consists of three screens: Home(Image1), Records(Image2), and Settings(Image3).
-<img src="screen1.png" width="250px">
-<img src="screen2.png" width="250px">
-<img src="screen3.png" width="250px">
+<img src="image/screen1.png" width="250px">
+<img src="image/screen2.png" width="250px">
+<img src="image/screen3.png" width="250px">
 
 ## Details
 ### Home
