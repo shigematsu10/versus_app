@@ -22,7 +22,7 @@ The records screen displays the five most recent win records and the overall res
 The overall results are updated and the meter changes accordingly.\
 You can also add your own scores.\
 Note : Once a record is added, it cannot be deleted.\
-<img src="screen2_add.png" width="250px">
+<img src="image/screen2_add.png" width="250px">
 
 ### Settings
 The settings screen allows players to change their names, introductions, and types of matches.\
