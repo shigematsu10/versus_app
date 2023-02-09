@@ -29,6 +29,8 @@ resource_add_path('./json')
 class Setting:
     pl0_name = ''
     pl1_name = ''
+    pl0_desc = ''
+    pl1_desc = ''
     pl0_win_num = 0
     pl1_win_num = 0
     all_match_num = 0
@@ -47,17 +49,17 @@ class Setting:
         self.all_match_num = setting_data['match_result'][0]["all"]
         self.pl0_win_num = setting_data['match_result'][0]["pl0"]
         self.pl1_win_num = setting_data['match_result'][0]["pl1"]
-       
+        self.pl0_desc = setting_data['description'][0]["0"]
+        self.pl1_desc = setting_data['description'][0]["1"]
+
         with open('./json/versus.json', 'r') as json_file:
             vs = json.load(json_file)
-
 
 
 class Display(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
- 
 class Screen_One(Screen, Setting):
     pass
 
@@ -72,9 +74,8 @@ class PopupMenu(BoxLayout, Setting):
     pl0_win_num = Setting.pl0_win_num
     pl1_win_num = Setting.pl1_win_num
 
-    def add_result(self):
-        # 総勝負数、各プレイヤーの勝利数を1加算する処理
 
+    def add_result(self):
         # 日付取得
         t_delta = datetime.timedelta(hours=9)
         JST = datetime.timezone(t_delta, 'JST')
@@ -120,15 +121,6 @@ class PopupMenu(BoxLayout, Setting):
             json.dump(save_setting, f)
 
 class Screen_Two(Screen, Setting):
-    pl0_name = Setting.pl0_name
-    pl1_name = Setting.pl1_name
-    all_match_num = Setting.all_match_num
-    pl0_win_num = Setting.pl0_win_num
-    pl1_win_num = Setting.pl1_win_num
-    match0 = Setting.match0
-    match1 = Setting.match1
-    match2 = Setting.match2
-
     pl0_text = StringProperty('')
     pl1_text = StringProperty('')
     match_text = StringProperty('')
@@ -138,6 +130,17 @@ class Screen_Two(Screen, Setting):
     result3_text = StringProperty('')
     result4_text = StringProperty('')
     result5_text_newest = StringProperty('')
+    winner1_img = StringProperty('')
+    winner2_img = StringProperty('')
+    winner3_img = StringProperty('')
+    winner4_img = StringProperty('')
+    winner5_img = StringProperty('')
+    winner1_color = ()
+    winner2_color = ()
+    winner3_color = ()
+    winner4_color = ()
+    winner5_color = StringProperty('')
+
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -145,24 +148,49 @@ class Screen_Two(Screen, Setting):
         with open(vs_path, 'r') as json_file:
             vs = json.load(json_file)
         
-        match_type = ['あっち向いてホイ', '指スマ', '大富豪']
+        match_type = [self.match0, self.match1, self.match2]
 
         for id, result in enumerate(vs["result"]):
 
-            if result["winner_id"] == 0 :
-                winner_name = self.pl0_name
-            else:
-                winner_name = self.pl1_name
-            
             if id == 0 :
-                self.result1_text_oldest = f'{result["date"]} \n {self.match0}で{winner_name}が勝利！'
+                if result["winner_id"] == 0 :
+                    winner_name = self.pl0_name
+                    self.winner1_img = 'pl0_blue.jpg'
+                else:
+                    winner_name = self.pl1_name
+                    self.winner1_img = 'pl1_red.jpg'
+                self.result1_text_oldest = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
             elif id == 1 :
-                self.result2_text = f'{result["date"]} \n {self.match1}で{winner_name}が勝利！'
+                if result["winner_id"] == 0 :
+                    winner_name = self.pl0_name
+                    self.winner2_img = 'pl0_blue.jpg'
+                else:
+                    winner_name = self.pl1_name
+                    self.winner2_img = 'pl1_red.jpg'
+                self.result2_text = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
             elif id == 2 :
-                self.result3_text = f'{result["date"]} \n {self.match2}で{winner_name}が勝利！'
+                if result["winner_id"] == 0 :
+                    winner_name = self.pl0_name
+                    self.winner3_img = 'pl0_blue.jpg'
+                else:
+                    winner_name = self.pl1_name
+                    self.winner3_img = 'pl1_red.jpg'
+                self.result3_text = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
             elif id == 3 :
+                if result["winner_id"] == 0 :
+                    winner_name = self.pl0_name
+                    self.winner4_img = 'pl0_blue.jpg'
+                else:
+                    winner_name = self.pl1_name
+                    self.winner4_img = 'pl1_red.jpg'
                 self.result4_text = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
             elif id == 4 :
+                if result["winner_id"] == 0 :
+                    winner_name = self.pl0_name
+                    self.winner5_img = 'pl0_blue.jpg'
+                else:
+                    winner_name = self.pl1_name
+                    self.winner5_img = 'pl1_red.jpg'
                 self.result5_text_newest = f'{result["date"]} \n {match_type[result["match_id"]]}で{winner_name}が勝利！'
 
         
@@ -174,33 +202,18 @@ class Screen_Two(Screen, Setting):
 
     def popup_open(self):
         content = PopupMenu(popup_close=self.popup_close)
-        self.popup = Popup(title='成績の追加', content=content, size_hint=(0.9, 0.5), auto_dismiss=False)
+        self.popup = Popup(title='成績の追加', content=content, size_hint=(0.9, 0.5), auto_dismiss=True)
         self.popup.open()
-        
+
+
     def popup_close(self):
         self.popup.dismiss()
-    
-    def ch_result1(self):
-        print(self.ids)
-    
-    def ch_result2(self):
-        print(self.ids)
 
-    def ch_result3(self):
-        print(self.ids)
-    
-    def ch_result4(self):
-        print(self.ids)
-    
-    def ch_result5(self):
-        print(self.ids)
 
 class Screen_Three(Screen, Setting):
     cl_input = None
     vs_input = None
 
-    def add_vs_type(self):
-        pass
 
     def ch_pl_name(self):
         with open('./json/setting.json', 'r') as json_file:
@@ -208,35 +221,86 @@ class Screen_Three(Screen, Setting):
         pl_input = self.ids.pl_inp.text
 
         #名前未入力、変更対象プレイヤー未選択の処理
-        if (pl_input == "") or (pl_input == "名前を入力してください") or (pl_input == "変更が完了しました!"):
-            print("値なし")
-            self.ids.pl_inp.text = "名前を入力してください"
-            pass
-        elif (self.ids.pl0.active==False) and (self.ids.pl1.active==False):
+        if (self.ids.pl0_name.active==False) and (self.ids.pl1_name.active==False):
             print("変更対象のプレイヤーの選択なし")
             self.ids.pl_inp.text = "変更対象のプレイヤーを選択してください"
-            pass
 
-        if self.ids.pl0.active == True :
-            print(setting_data['user'][0]["0"])
-            setting_data['user'][0]["0"] = pl_input
-        elif self.ids.pl1.active == True :
-            setting_data['user'][0]["1"] = pl_input
-        
-        save_setting = {"match_type":setting_data['match_type'], "user":setting_data['user'], "match_result":setting_data['match_result']}
-        with open('./json/setting.json', 'w') as f:
-            json.dump(save_setting, f)
-        self.ids.pl_inp.text = "変更が完了しました!"
+        elif (pl_input == "") or (pl_input == "変更対象のプレイヤーを選択してください") or (pl_input == "名前を入力してください") or (pl_input == "変更が完了しました!"):
+            print("値なし")
+            self.ids.pl_inp.text = "名前を入力してください"
+
+        else :
+            if self.ids.pl0_name.active == True :
+                print(setting_data['user'][0]["0"])
+                setting_data['user'][0]["0"] = pl_input
+            elif self.ids.pl1_name.active == True :
+                setting_data['user'][0]["1"] = pl_input
+
+            save_setting = {"user":setting_data['user'], "description":setting_data['description'], "match_type":setting_data['match_type'], "match_result":setting_data['match_result']}
+            with open('./json/setting.json', 'w') as f:
+                json.dump(save_setting, f)
+            self.ids.pl_inp.text = "変更が完了しました!"
 
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def add_description(self):
+        with open('./json/setting.json', 'r') as json_file:
+            setting_data = json.load(json_file)
+        desc_input = self.ids.desc_inp.text
+
+        #紹介文未入力、変更対象プレイヤー未選択の処理
+        if (self.ids.pl0_desc.active==False) and (self.ids.pl1_desc.active==False):
+            print("変更対象のプレイヤーの選択なし")
+            self.ids.desc_inp.text = "変更対象のプレイヤーを選択してください"
+
+        elif (desc_input == "") or (desc_input == "変更対象のプレイヤーを選択してください") or (desc_input == "紹介文を入力してください") or (desc_input == "変更が完了しました!"):
+            print("値なし")
+            self.ids.desc_inp.text = "紹介文を入力してください"
+
+        else :
+            if self.ids.pl0_desc.active == True :
+                setting_data['description'][0]["0"] = desc_input
+            elif self.ids.pl1_desc.active == True :
+                setting_data['description'][0]["1"] = desc_input
+
+            save_setting = {"user":setting_data['user'], "description":setting_data['description'], "match_type":setting_data['match_type'], "match_result":setting_data['match_result']}
+            with open('./json/setting.json', 'w') as f:
+                json.dump(save_setting, f)
+            self.ids.desc_inp.text = "変更が完了しました!"
+
+
+    def change_vs_type(self):
+        with open('./json/setting.json', 'r') as json_file:
+            setting_data = json.load(json_file)
+        vs_input = self.ids.vs_inp.text
+
+        #紹介文未入力、変更対象プレイヤー未選択の処理
+        if (self.ids.vs0.active==False) and (self.ids.vs1.active==False) and (self.ids.vs2.active==False):
+            print("変更対象の勝負の選択なし")
+            self.ids.vs_inp.text = "変更対象の勝負を選択してください"
+
+        elif (vs_input == "") or (vs_input == "変更対象の勝負を選択してください") or (vs_input == "追加する勝負名を入力してください") or (vs_input == "変更が完了しました!") :
+            print("値なし")
+            self.ids.vs_inp.text = "追加する勝負名を入力してください"
+
+        else :
+            if self.ids.vs0.active == True :
+                setting_data['match_type'][0]["0"] = vs_input
+            elif self.ids.vs1.active == True :
+                setting_data['match_type'][0]["1"] = vs_input
+            elif self.ids.vs2.active == True :
+                setting_data['match_type'][0]["2"] = vs_input
+
+            save_setting = {"user":setting_data['user'], "description":setting_data['description'], "match_type":setting_data['match_type'], "match_result":setting_data['match_result']}
+            with open('./json/setting.json', 'w') as f:
+                json.dump(save_setting, f)
+            self.ids.vs_inp.text = "変更が完了しました!"
+
+
 
 class VsApp(App):
     def __init__(self, **kwargs):
         super(VsApp, self).__init__(**kwargs)
         self.title = 'Versus'
-
 
 
 if __name__ == '__main__':
