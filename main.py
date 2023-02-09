@@ -55,7 +55,6 @@ class Setting:
         with open('./json/versus.json', 'r') as json_file:
             vs = json.load(json_file)
 
-
 class Display(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -209,7 +208,6 @@ class Screen_Two(Screen, Setting):
     def popup_close(self):
         self.popup.dismiss()
 
-
 class Screen_Three(Screen, Setting):
     cl_input = None
     vs_input = None
@@ -294,8 +292,6 @@ class Screen_Three(Screen, Setting):
             with open('./json/setting.json', 'w') as f:
                 json.dump(save_setting, f)
             self.ids.vs_inp.text = "変更が完了しました!"
-
-
 
 class VsApp(App):
     def __init__(self, **kwargs):
